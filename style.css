@@ -282,19 +282,17 @@ textarea::placeholder {
     align-items: center;
 }
 
-.arrow-vibe {
-    grid-column: 3;
-    grid-row: 2;
+.arrow-horizontal-left {
+    grid-column: 2;
+    grid-row: 3;
     align-items: center;
+    transform: rotate(180deg);
 }
 
 .arrow-up-right {
     grid-column: 3;
     grid-row: 2;
-    position: absolute;
-    right: -60px;
-    top: 50%;
-    transform: translateY(-50%) rotate(-90deg);
+    align-items: center;
 }
 
 /* Arrow Styles */
@@ -356,6 +354,39 @@ textarea::placeholder {
     filter: drop-shadow(0 2px 4px rgba(0, 116, 217, 0.2));
 }
 
+.arrow-horizontal-reverse .arrow-body {
+    width: 60px;
+    height: 4px;
+}
+
+.arrow-horizontal-reverse .arrow-head {
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 12px solid var(--cib-secondary-blue);
+    position: absolute;
+    left: -8px;
+    border-top: none;
+    transform: rotate(180deg);
+    filter: drop-shadow(0 2px 4px rgba(0, 116, 217, 0.2));
+}
+
+.arrow-vertical-up .arrow-body {
+    width: 4px;
+    height: 60px;
+}
+
+.arrow-vertical-up .arrow-head {
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 12px solid var(--cib-secondary-blue);
+    border-top: none;
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%) rotate(180deg);
+    filter: drop-shadow(0 2px 4px rgba(0, 116, 217, 0.2));
+}
+
 /* Arrow Labels - CIB Corporate */
 .arrow-label {
     background: var(--cib-white);
@@ -373,6 +404,11 @@ textarea::placeholder {
 
 .arrow-horizontal-right .arrow-label {
     margin-top: 1rem;
+}
+
+.arrow-horizontal-left .arrow-label {
+    margin-top: 1rem;
+    transform: rotate(180deg);
 }
 
 .arrow-label img.logo-small {
@@ -476,7 +512,7 @@ footer p {
     
     .workflow-grid {
         grid-template-columns: 1fr;
-        grid-template-rows: auto auto auto auto auto auto auto;
+        grid-template-rows: auto auto auto auto auto auto auto auto auto;
         gap: 15px;
         min-height: auto;
     }
@@ -503,24 +539,26 @@ footer p {
         transform: rotate(90deg);
     }
     
-    .top-right {
+    .bottom-right {
         grid-column: 1;
         grid-row: 5;
     }
     
-    .arrow-vibe {
+    .arrow-horizontal-left {
         grid-column: 1;
         grid-row: 6;
         transform: rotate(90deg);
     }
     
-    .bottom-right {
+    .top-right {
         grid-column: 1;
         grid-row: 7;
     }
     
     .arrow-up-right {
-        display: none; /* Hide de-pseudonymization arrow on mobile for clarity */
+        grid-column: 1;
+        grid-row: 8;
+        transform: rotate(90deg);
     }
     
     .arrow-label {
@@ -530,6 +568,11 @@ footer p {
     }
     
     .arrow-horizontal-right .arrow-label {
+        transform: none;
+        margin-top: 1rem;
+    }
+    
+    .arrow-horizontal-left .arrow-label {
         transform: none;
         margin-top: 1rem;
     }
