@@ -146,11 +146,11 @@ main {
 .workflow-grid {
     display: grid;
     grid-template-columns: 1fr 120px 1fr;
-    grid-template-rows: 1fr 120px 1fr;
+    grid-template-rows: 1fr 80px 120px 1fr;
     gap: 20px;
     margin-bottom: 3rem;
     position: relative;
-    min-height: 600px;
+    min-height: 700px;
 }
 
 /* Text Area Containers - CIB Corporate Style */
@@ -199,12 +199,12 @@ main {
 
 .bottom-left {
     grid-column: 1;
-    grid-row: 3;
+    grid-row: 4;
 }
 
 .bottom-right {
     grid-column: 3;
-    grid-row: 3;
+    grid-row: 4;
 }
 
 /* Labels - CIB Corporate */
@@ -276,25 +276,29 @@ textarea::placeholder {
     align-items: center;
 }
 
-.arrow-diagonal-up {
+.arrow-horizontal-right {
     grid-column: 2;
-    grid-row: 2;
-    transform: rotate(-45deg);
+    grid-row: 3;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    top: -30px;
 }
 
-.arrow-vibe {
-    grid-column: 3;
-    grid-row: 2;
+.arrow-horizontal-left {
+    grid-column: 2;
+    grid-row: 3;
     align-items: center;
+    justify-content: center;
+    position: relative;
+    top: 30px;
+    transform: rotate(180deg);
 }
 
 .arrow-up-right {
     grid-column: 3;
-    grid-row: 2;
-    position: absolute;
-    right: -60px;
-    top: 50%;
-    transform: translateY(-50%) rotate(90deg);
+    grid-row: 3;
+    align-items: center;
 }
 
 /* Arrow Styles */
@@ -319,6 +323,11 @@ textarea::placeholder {
     height: 60px;
 }
 
+.arrow-horizontal .arrow-body {
+    width: 60px;
+    height: 4px;
+}
+
 .arrow-head {
     width: 0;
     height: 0;
@@ -341,6 +350,49 @@ textarea::placeholder {
     transform: translateX(-50%);
 }
 
+.arrow-horizontal .arrow-head {
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 12px solid var(--cib-secondary-blue);
+    position: absolute;
+    right: -8px;
+    border-top: none;
+    filter: drop-shadow(0 2px 4px rgba(0, 116, 217, 0.2));
+}
+
+.arrow-horizontal-reverse .arrow-body {
+    width: 60px;
+    height: 4px;
+}
+
+.arrow-horizontal-reverse .arrow-head {
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 12px solid var(--cib-secondary-blue);
+    position: absolute;
+    left: -8px;
+    border-top: none;
+    transform: rotate(180deg);
+    filter: drop-shadow(0 2px 4px rgba(0, 116, 217, 0.2));
+}
+
+.arrow-vertical-up .arrow-body {
+    width: 4px;
+    height: 60px;
+}
+
+.arrow-vertical-up .arrow-head {
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 12px solid var(--cib-secondary-blue);
+    border-top: none;
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    filter: drop-shadow(0 2px 4px rgba(0, 116, 217, 0.2));
+}
+
 /* Arrow Labels - CIB Corporate */
 .arrow-label {
     background: var(--cib-white);
@@ -356,9 +408,13 @@ textarea::placeholder {
     min-width: 120px;
 }
 
-.arrow-diagonal-up .arrow-label {
-    transform: rotate(45deg);
-    margin-top: 2rem;
+.arrow-horizontal-right .arrow-label {
+    margin-top: 1rem;
+}
+
+.arrow-horizontal-left .arrow-label {
+    margin-top: 1rem;
+    transform: rotate(180deg);
 }
 
 .arrow-label img.logo-small {
@@ -462,7 +518,7 @@ footer p {
     
     .workflow-grid {
         grid-template-columns: 1fr;
-        grid-template-rows: auto auto auto auto auto auto auto;
+        grid-template-rows: auto auto auto auto auto auto auto auto auto;
         gap: 15px;
         min-height: auto;
     }
@@ -483,30 +539,36 @@ footer p {
         grid-row: 3;
     }
     
-    .arrow-diagonal-up {
+    .arrow-horizontal-right {
         grid-column: 1;
         grid-row: 4;
         transform: rotate(90deg);
+        position: relative;
+        top: 0;
     }
     
-    .top-right {
+    .bottom-right {
         grid-column: 1;
         grid-row: 5;
     }
     
-    .arrow-vibe {
+    .arrow-horizontal-left {
         grid-column: 1;
         grid-row: 6;
         transform: rotate(90deg);
+        position: relative;
+        top: 0;
     }
     
-    .bottom-right {
+    .top-right {
         grid-column: 1;
         grid-row: 7;
     }
     
     .arrow-up-right {
-        display: none; /* Hide de-pseudonymization arrow on mobile for clarity */
+        grid-column: 1;
+        grid-row: 8;
+        transform: rotate(90deg);
     }
     
     .arrow-label {
@@ -515,7 +577,12 @@ footer p {
         padding: 0.4rem 0.8rem;
     }
     
-    .arrow-diagonal-up .arrow-label {
+    .arrow-horizontal-right .arrow-label {
+        transform: none;
+        margin-top: 1rem;
+    }
+    
+    .arrow-horizontal-left .arrow-label {
         transform: none;
         margin-top: 1rem;
     }
