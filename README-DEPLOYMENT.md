@@ -113,6 +113,28 @@ Update the worker URL in your frontend:
 
 Replace `YOUR_SUBDOMAIN` with your actual Cloudflare Workers subdomain.
 
+## Configuration
+
+### Text Improvement Prompt
+
+The prompt used for text improvement is configured in the backend for security reasons and cannot be changed via client requests.
+
+**To modify the prompt**:
+
+1. **Edit `worker/wrangler.toml`**:
+   ```toml
+   [vars]
+   DEFAULT_PROMPT = "Your custom prompt here"
+   ```
+
+2. **Redeploy the worker**:
+   ```bash
+   cd worker
+   npm run deploy:production
+   ```
+
+**Default prompt**: "Verbessere den folgenden Text in Bezug auf Grammatik, Stil und Lesbarkeit, behalte aber den ursprünglichen Sinn und Ton bei:"
+
 ## API Endpoint
 
 The worker exposes one endpoint:
@@ -122,8 +144,7 @@ The worker exposes one endpoint:
 **Request Body**:
 ```json
 {
-  "text": "Text to improve",
-  "prompt": "Custom prompt (optional)"
+  "text": "Text to improve"
 }
 ```
 
@@ -133,10 +154,11 @@ The worker exposes one endpoint:
   "success": true,
   "originalText": "Original text",
   "improvedText": "Improved text from ChatGPT",
-  "prompt": "Prompt used",
   "timestamp": "2024-01-01T12:00:00.000Z"
 }
 ```
+
+**Note**: The prompt used for text improvement is now configured in the backend (`wrangler.toml`) and cannot be changed via API requests for security reasons.
 
 ## Security Features
 
@@ -161,7 +183,7 @@ The worker exposes one endpoint:
    ```bash
    curl -X POST https://your-worker.workers.dev/improve \
      -H "Content-Type: application/json" \
-     -d '{"text":"Hello world","prompt":"Make this better"}'
+     -d '{"text":"Hello world"}'
    ```
 
 ## Troubleshooting
@@ -199,3 +221,38 @@ The worker exposes one endpoint:
 - **GitHub Actions**: Free for public repositories
 
 For production use, consider implementing additional rate limiting and monitoring.
+
+## Migration from Previous Versions
+
+### Version 2.0.0 - Backend Configuration for Prompts
+
+**Breaking Changes**:
+- The `prompt` parameter is no longer accepted in the `/improve` API endpoint
+- Prompt configuration has been moved to the backend for security reasons
+
+**Migration Steps**:
+
+1. **Update your `wrangler.toml`** to include the prompt configuration:
+   ```toml
+   [vars]
+   DEFAULT_PROMPT = "Your custom prompt here"
+   ```
+
+2. **Update client code** to remove the `prompt` parameter from API calls:
+   ```javascript
+   // Before (v1.x)
+   fetch('/improve', {
+     method: 'POST',
+     body: JSON.stringify({ text: "...", prompt: "..." })
+   })
+   
+   // After (v2.0+)
+   fetch('/improve', {
+     method: 'POST', 
+     body: JSON.stringify({ text: "..." })
+   })
+   ```
+
+3. **Redeploy the worker** after configuration changes
+
+**Reason for Change**: This change improves security by preventing dynamic prompt injection and ensures consistent text improvement behavior across all requests.

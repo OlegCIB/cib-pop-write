@@ -23,7 +23,7 @@ export default {
     try {
       // Parse and validate request body
       const requestData = await request.json();
-      const { text, prompt } = requestData;
+      const { text } = requestData;
       
       if (!text || typeof text !== 'string') {
         return createErrorResponse('Text is required and must be a string', 400);
@@ -39,8 +39,8 @@ export default {
         return createErrorResponse('OpenAI API key not configured', 500);
       }
 
-      // Use provided prompt or default German prompt
-      const improvementPrompt = prompt || 'Verbessere den folgenden Text in Bezug auf Grammatik, Stil und Lesbarkeit, behalte aber den ursprünglichen Sinn und Ton bei:';
+      // Read prompt from backend configuration (environment variable)
+      const improvementPrompt = env.DEFAULT_PROMPT || 'Verbessere den folgenden Text in Bezug auf Grammatik, Stil und Lesbarkeit, behalte aber den ursprünglichen Sinn und Ton bei:';
 
       // Call OpenAI API for text improvement
       const improvedText = await improveTextWithChatGPT(text, improvementPrompt, env.OPENAI_API_KEY);
@@ -50,7 +50,6 @@ export default {
         success: true,
         originalText: text,
         improvedText: improvedText,
-        prompt: improvementPrompt,
         timestamp: new Date().toISOString()
       });
 
