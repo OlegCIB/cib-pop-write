@@ -12,3 +12,7 @@ name = "cib-pop-write-text-improver-staging"
 
 # Environment variables
 # OPENAI_API_KEY should be set as a secret via: wrangler secret put OPENAI_API_KEY
+
+# Configuration variables
+[vars]
+DEFAULT_PROMPT = "Verbessere den folgenden Text in Bezug auf Grammatik, Stil und Lesbarkeit, behalte aber den ursprünglichen Sinn und Ton bei:"

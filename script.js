@@ -8,7 +8,6 @@ const inputText = document.getElementById('input-text');
 const pseudonymizedText = document.getElementById('pseudonymized-text');
 const improvedText = document.getElementById('improved-text');
 const finalText = document.getElementById('final-text');
-const currentPrompt = document.getElementById('current-prompt');
 
 // Initialize the application when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
@@ -20,12 +19,6 @@ document.addEventListener('DOMContentLoaded', function() {
  * Initialize the workflow with default states
  */
 function initializeWorkflow() {
-    // Set default prompt
-    const defaultPrompt = 'Verbessere den folgenden Text in Bezug auf Grammatik, Stil und Lesbarkeit, behalte aber den ursprünglichen Sinn und Ton bei:';
-    if (currentPrompt) {
-        currentPrompt.textContent = `Standardprompt: "${defaultPrompt}"`;
-    }
-    
     // Add placeholder animations on focus/blur
     addPlaceholderAnimations();
 }
@@ -76,7 +69,7 @@ async function handlePseudonymizedChange() {
         addProcessingAnimation(improvedText);
         
         try {
-            // Call ChatGPT improvement API
+            // Call ChatGPT improvement API (no longer sending prompt from frontend)
             const improved = await improveTextWithChatGPT(text);
             improvedText.value = improved;
         } catch (error) {
@@ -117,7 +110,6 @@ function simulatePseudonymization(text) {
  */
 async function improveTextWithChatGPT(text) {
     const workerUrl = getWorkerUrl();
-    const currentPromptText = getCurrentPrompt();
     
     try {
         const response = await fetch(`${workerUrl}/improve`, {
@@ -126,8 +118,8 @@ async function improveTextWithChatGPT(text) {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                text: text,
-                prompt: currentPromptText
+                text: text
+                // Note: Prompt is no longer sent from frontend - it's configured in the backend
             })
         });
 
@@ -239,27 +231,11 @@ function getWorkerUrl() {
     return 'https://cib-pop-write-worker.your-subdomain.workers.dev';
 }
 
-/**
- * Get current prompt text from the display
- */
-function getCurrentPrompt() {
-    const promptDisplay = document.getElementById('current-prompt');
-    if (!promptDisplay) {
-        return 'Verbessere den folgenden Text in Bezug auf Grammatik, Stil und Lesbarkeit, behalte aber den ursprünglichen Sinn und Ton bei:';
-    }
-    
-    // Extract prompt from display text (remove "Standardprompt: " prefix)
-    const promptText = promptDisplay.textContent || promptDisplay.innerText;
-    const match = promptText.match(/Standardprompt:\s*"(.+)"/);
-    return match ? match[1] : promptText;
-}
-
 // Export functions for potential use in other scripts
 window.CIBPopWrite = {
     simulatePseudonymization,
     improveTextWithChatGPT,
     simulateTextImprovement,
     simulateVibeTexting,
-    getWorkerUrl,
-    getCurrentPrompt
+    getWorkerUrl
 };
