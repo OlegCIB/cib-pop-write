@@ -228,7 +228,7 @@ function getWorkerUrl() {
     }
     
     // Default to production worker URL (update this with your actual worker URL)
-    return 'https://cib-pop-write-worker.your-subdomain.workers.dev';
+    return 'https://cib-pop-write-text-improver-prod.olegsk.workers.dev';
 }
 
 // Export functions for potential use in other scripts
