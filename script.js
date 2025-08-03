@@ -66,17 +66,23 @@ function handleInputChange() {
 }
 
 /**
- * Handle pseudonymized text changes (simulate ChatGPT improvement)
+ * Handle pseudonymized text changes (ChatGPT improvement via API)
  */
-function handlePseudonymizedChange() {
+async function handlePseudonymizedChange() {
     const text = pseudonymizedText.value.trim();
     if (text && improvedText) {
-        // Simulate ChatGPT improvement
-        const improved = simulateTextImprovement(text);
-        improvedText.value = improved;
-        
-        // Trigger visual feedback
+        // Show loading state
+        improvedText.value = 'ChatGPT verbessert den Text...';
         addProcessingAnimation(improvedText);
+        
+        try {
+            // Call ChatGPT improvement API
+            const improved = await improveTextWithChatGPT(text);
+            improvedText.value = improved;
+        } catch (error) {
+            console.error('Text improvement failed:', error);
+            improvedText.value = text + '\n\n[Fehler: ChatGPT Verbesserung nicht verfügbar]';
+        }
     }
 }
 
@@ -107,11 +113,50 @@ function simulatePseudonymization(text) {
 }
 
 /**
- * Simulate text improvement process
+ * Improve text using ChatGPT via Cloudflare Worker
+ */
+async function improveTextWithChatGPT(text) {
+    const workerUrl = getWorkerUrl();
+    const currentPromptText = getCurrentPrompt();
+    
+    try {
+        const response = await fetch(`${workerUrl}/improve`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                text: text,
+                prompt: currentPromptText
+            })
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        
+        if (data.success && data.improvedText) {
+            return data.improvedText;
+        } else {
+            throw new Error('Invalid response from text improvement service');
+        }
+        
+    } catch (error) {
+        console.error('Error improving text:', error);
+        // Fallback to simulation if API fails
+        return simulateTextImprovement(text);
+    }
+}
+
+/**
+ * Simulate text improvement process (fallback)
  */
 function simulateTextImprovement(text) {
     // Simple simulation - add some improvement indicators
-    return text + '\n\n[ChatGPT Verbesserung: Text wurde für bessere Lesbarkeit optimiert]';
+    return text + '\n\n[ChatGPT Verbesserung: Text wurde für bessere Lesbarkeit optimiert (Simulation - API nicht verfügbar)]';
 }
 
 /**
@@ -180,9 +225,41 @@ function isInViewport(element) {
     );
 }
 
+/**
+ * Get the Cloudflare Worker URL from environment or default
+ */
+function getWorkerUrl() {
+    // Try to get from meta tag or environment variable
+    const metaTag = document.querySelector('meta[name="worker-url"]');
+    if (metaTag) {
+        return metaTag.getAttribute('content');
+    }
+    
+    // Default to production worker URL (update this with your actual worker URL)
+    return 'https://cib-pop-write-worker.your-subdomain.workers.dev';
+}
+
+/**
+ * Get current prompt text from the display
+ */
+function getCurrentPrompt() {
+    const promptDisplay = document.getElementById('current-prompt');
+    if (!promptDisplay) {
+        return 'Verbessere den folgenden Text in Bezug auf Grammatik, Stil und Lesbarkeit, behalte aber den ursprünglichen Sinn und Ton bei:';
+    }
+    
+    // Extract prompt from display text (remove "Standardprompt: " prefix)
+    const promptText = promptDisplay.textContent || promptDisplay.innerText;
+    const match = promptText.match(/Standardprompt:\s*"(.+)"/);
+    return match ? match[1] : promptText;
+}
+
 // Export functions for potential use in other scripts
 window.CIBPopWrite = {
     simulatePseudonymization,
+    improveTextWithChatGPT,
     simulateTextImprovement,
-    simulateVibeTexting
+    simulateVibeTexting,
+    getWorkerUrl,
+    getCurrentPrompt
 };
