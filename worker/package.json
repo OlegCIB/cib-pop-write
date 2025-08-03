@@ -1,0 +1,23 @@
+{
+  "name": "cib-pop-write-worker",
+  "version": "1.0.0",
+  "description": "Cloudflare Worker for CIB Pop Write text improvement using ChatGPT",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "deploy:staging": "wrangler deploy --env staging",
+    "deploy:production": "wrangler deploy --env production"
+  },
+  "keywords": [
+    "cloudflare-worker",
+    "chatgpt",
+    "text-improvement",
+    "cib-pop"
+  ],
+  "author": "CIB Pop Write Team",
+  "license": "MIT",
+  "devDependencies": {
+    "wrangler": "^3.0.0"
+  }
+}

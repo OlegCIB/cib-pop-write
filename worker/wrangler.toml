@@ -1,0 +1,14 @@
+name = "cib-pop-write-worker"
+main = "src/index.js"
+compatibility_date = "2024-01-01"
+compatibility_flags = ["nodejs_compat"]
+
+# Environment variables (secrets should be set via wrangler secret put)
+[env.production]
+name = "cib-pop-write-worker"
+
+[env.staging]
+name = "cib-pop-write-worker-staging"
+
+# Bind environment variables
+# OPENAI_API_KEY should be set as a secret via: wrangler secret put OPENAI_API_KEY
