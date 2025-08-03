@@ -83,18 +83,32 @@ npm run deploy:staging
 npm run deploy:production
 ```
 
-### 5. Update Frontend Configuration
+### 5. Workers.dev Subdomain Registration
+
+**Important**: If you encounter a warning about needing to register a workers.dev subdomain, you have two options:
+
+1. **Register a subdomain** (if you want to use workers.dev):
+   ```bash
+   cd worker
+   npx wrangler subdomain
+   ```
+
+2. **Use custom routes** (recommended for production):
+   - Add a custom domain in your wrangler.toml
+   - Configure DNS records in Cloudflare Dashboard
+
+### 6. Update Frontend Configuration
 
 Update the worker URL in your frontend:
 
 1. **Edit `index.html`**:
    ```html
-   <meta name="worker-url" content="https://cib-pop-write-worker.YOUR_SUBDOMAIN.workers.dev">
+   <meta name="worker-url" content="https://cib-pop-write-text-improver.YOUR_SUBDOMAIN.workers.dev">
    ```
 
 2. **Or update `script.js`** (line 241):
    ```javascript
-   return 'https://cib-pop-write-worker.YOUR_SUBDOMAIN.workers.dev';
+   return 'https://cib-pop-write-text-improver.YOUR_SUBDOMAIN.workers.dev';
    ```
 
 Replace `YOUR_SUBDOMAIN` with your actual Cloudflare Workers subdomain.
@@ -154,16 +168,21 @@ The worker exposes one endpoint:
 
 ### Common Issues
 
-1. **"OpenAI API key not configured"**
+1. **"[WARNING] You need to register a workers.dev subdomain"**
+   - Run `npx wrangler subdomain` to register a subdomain
+   - Or configure custom routes in wrangler.toml for production use
+
+2. **"OpenAI API key not configured"**
    - Ensure `OPENAI_API_KEY` secret is set in GitHub and Cloudflare
 
-2. **CORS errors**
+3. **CORS errors**
    - Worker includes CORS headers, check browser console for details
 
-3. **Worker not found**
+4. **Worker not found**
    - Verify the worker URL in the frontend matches your deployed worker
+   - Check that the worker name matches the one in wrangler.toml
 
-4. **GitHub Actions failing**
+5. **GitHub Actions failing**
    - Check that all required secrets are set in repository settings
    - Verify Cloudflare API token has correct permissions
 
