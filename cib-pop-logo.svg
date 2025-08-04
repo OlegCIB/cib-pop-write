@@ -1,8 +1,8 @@
 <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <linearGradient id="cibGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#003d6b;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#0074d9;stop-opacity:1" />
+      <stop offset="0%" style="stop-color:#e11e19;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#4D6278;stop-opacity:1" />
     </linearGradient>
   </defs>
   
@@ -10,8 +10,8 @@
   <circle cx="20" cy="20" r="18" fill="url(#cibGradient)" stroke="#ffffff" stroke-width="1"/>
   
   <!-- CIB text -->
-  <text x="20" y="16" font-family="Arial, sans-serif" font-size="8" font-weight="bold" text-anchor="middle" fill="white">CIB</text>
+  <text x="20" y="16" font-family="Segoe UI, Arial, sans-serif" font-size="8" font-weight="bold" text-anchor="middle" fill="white">CIB</text>
   
-  <!-- POP text -->
-  <text x="20" y="26" font-family="Arial, sans-serif" font-size="6" font-weight="normal" text-anchor="middle" fill="white">POP</text>
+  <!-- PoP text -->
+  <text x="20" y="26" font-family="Segoe UI, Arial, sans-serif" font-size="6" font-weight="normal" text-anchor="middle" fill="white">PoP</text>
 </svg>
