@@ -6,31 +6,35 @@
 /* CIB Corporate Design Variables */
 :root {
     /* CIB Primary Colors */
-    --cib-primary-blue: #003d6b;
-    --cib-secondary-blue: #0074d9;
-    --cib-light-blue: #e6f3ff;
-    --cib-accent-blue: #4a90e2;
+    --cib-red: #e11e19;
+    --cib-black: #4D6278;
+    
+    /* CIB Gray Palette */
+    --cib-gray-1: #4D6278;
+    --cib-gray-2: #98A9B7;
+    --cib-gray-3: #CCD7E4;
+    --cib-gray-4: #DFE7F0;
+    --cib-gray-5: #E9F0F7;
+    --cib-gray-6: #F0F4F7;
+    --cib-gray-7: #F6F9FB;
     
     /* CIB Neutral Colors */
     --cib-white: #ffffff;
-    --cib-light-gray: #f8f9fa;
-    --cib-medium-gray: #6c757d;
-    --cib-dark-gray: #343a40;
     
     /* CIB Gradients */
-    --cib-primary-gradient: linear-gradient(135deg, #003d6b 0%, #0074d9 100%);
-    --cib-light-gradient: linear-gradient(135deg, #e6f3ff 0%, #ffffff 100%);
-    --cib-accent-gradient: linear-gradient(135deg, #4a90e2 0%, #0074d9 100%);
+    --cib-primary-gradient: linear-gradient(135deg, var(--cib-red) 0%, var(--cib-black) 100%);
+    --cib-light-gradient: linear-gradient(135deg, var(--cib-gray-7) 0%, var(--cib-white) 100%);
+    --cib-accent-gradient: linear-gradient(135deg, var(--cib-red) 0%, var(--cib-gray-1) 100%);
     
     /* Corporate Styling */
     --glass-bg: rgba(255, 255, 255, 0.95);
-    --glass-bg-dark: rgba(0, 61, 107, 0.05);
-    --glass-border: rgba(0, 61, 107, 0.1);
-    --text-primary: var(--cib-dark-gray);
-    --text-secondary: var(--cib-medium-gray);
+    --glass-bg-dark: rgba(77, 98, 120, 0.05);
+    --glass-border: rgba(77, 98, 120, 0.1);
+    --text-primary: var(--cib-black);
+    --text-secondary: var(--cib-gray-2);
     --text-white: var(--cib-white);
-    --shadow-primary: 0 4px 20px rgba(0, 61, 107, 0.1);
-    --shadow-hover: 0 8px 30px rgba(0, 61, 107, 0.15);
+    --shadow-primary: 0 4px 20px rgba(77, 98, 120, 0.1);
+    --shadow-hover: 0 8px 30px rgba(77, 98, 120, 0.15);
     --border-radius: 12px;
     --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -43,8 +47,8 @@
 }
 
 body {
-    font-family: 'Segoe UI', 'Open Sans', 'Helvetica Neue', Arial, sans-serif;
-    background: var(--cib-light-gray);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: var(--cib-gray-7);
     min-height: 100vh;
     color: var(--text-primary);
     line-height: 1.6;
@@ -119,13 +123,13 @@ header:hover {
     width: 60px;
     height: 60px;
     margin-bottom: 1rem;
-    filter: drop-shadow(0 2px 4px rgba(0, 61, 107, 0.1));
+    filter: drop-shadow(0 2px 4px rgba(77, 98, 120, 0.1));
 }
 
 header h1 {
     font-size: clamp(2rem, 4vw, 3.5rem);
     font-weight: 600;
-    color: var(--cib-primary-blue);
+    color: var(--cib-red);
     text-shadow: none;
     margin-bottom: 0.5rem;
 }
