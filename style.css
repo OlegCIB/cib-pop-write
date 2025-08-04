@@ -217,7 +217,7 @@ main {
     font-weight: 600;
     margin-bottom: 1rem;
     font-size: 1.1rem;
-    color: var(--cib-primary-blue);
+    color: var(--cib-black);
     text-shadow: none;
 }
 
@@ -238,9 +238,9 @@ textarea {
 
 textarea:focus {
     outline: none;
-    border-color: var(--cib-secondary-blue);
+    border-color: var(--cib-red);
     background: var(--cib-white);
-    box-shadow: 0 0 0 3px rgba(0, 116, 217, 0.1);
+    box-shadow: 0 0 0 3px rgba(225, 30, 25, 0.1);
 }
 
 textarea.focused {
@@ -248,8 +248,8 @@ textarea.focused {
 }
 
 textarea.processing {
-    background: var(--cib-light-blue);
-    border-color: var(--cib-accent-blue);
+    background: var(--cib-gray-7);
+    border-color: var(--cib-red);
     animation: processing 1s ease-in-out;
 }
 
@@ -319,7 +319,7 @@ textarea::placeholder {
     background: var(--cib-accent-gradient);
     border-radius: 2px;
     position: relative;
-    box-shadow: 0 2px 8px rgba(0, 116, 217, 0.2);
+    box-shadow: 0 2px 8px rgba(225, 30, 25, 0.2);
 }
 
 .arrow-vertical .arrow-body {
@@ -337,16 +337,16 @@ textarea::placeholder {
     height: 0;
     border-left: 8px solid transparent;
     border-right: 8px solid transparent;
-    border-bottom: 12px solid var(--cib-secondary-blue);
+    border-bottom: 12px solid var(--cib-red);
     position: absolute;
     right: -8px;
-    filter: drop-shadow(0 2px 4px rgba(0, 116, 217, 0.2));
+    filter: drop-shadow(0 2px 4px rgba(225, 30, 25, 0.2));
 }
 
 .arrow-vertical .arrow-head {
     border-left: 8px solid transparent;
     border-right: 8px solid transparent;
-    border-top: 12px solid var(--cib-secondary-blue);
+    border-top: 12px solid var(--cib-red);
     border-bottom: none;
     bottom: -8px;
     right: auto;
@@ -357,11 +357,11 @@ textarea::placeholder {
 .arrow-horizontal .arrow-head {
     border-left: 8px solid transparent;
     border-right: 8px solid transparent;
-    border-bottom: 12px solid var(--cib-secondary-blue);
+    border-bottom: 12px solid var(--cib-red);
     position: absolute;
     right: -8px;
     border-top: none;
-    filter: drop-shadow(0 2px 4px rgba(0, 116, 217, 0.2));
+    filter: drop-shadow(0 2px 4px rgba(225, 30, 25, 0.2));
 }
 
 .arrow-horizontal-reverse .arrow-body {
@@ -372,12 +372,12 @@ textarea::placeholder {
 .arrow-horizontal-reverse .arrow-head {
     border-left: 8px solid transparent;
     border-right: 8px solid transparent;
-    border-bottom: 12px solid var(--cib-secondary-blue);
+    border-bottom: 12px solid var(--cib-red);
     position: absolute;
     left: -8px;
     border-top: none;
     transform: rotate(180deg);
-    filter: drop-shadow(0 2px 4px rgba(0, 116, 217, 0.2));
+    filter: drop-shadow(0 2px 4px rgba(225, 30, 25, 0.2));
 }
 
 .arrow-vertical-up .arrow-body {
@@ -388,13 +388,13 @@ textarea::placeholder {
 .arrow-vertical-up .arrow-head {
     border-left: 8px solid transparent;
     border-right: 8px solid transparent;
-    border-bottom: 12px solid var(--cib-secondary-blue);
+    border-bottom: 12px solid var(--cib-red);
     border-top: none;
     position: absolute;
     top: -8px;
     left: 50%;
     transform: translateX(-50%);
-    filter: drop-shadow(0 2px 4px rgba(0, 116, 217, 0.2));
+    filter: drop-shadow(0 2px 4px rgba(225, 30, 25, 0.2));
 }
 
 /* Arrow Labels - CIB Corporate */
@@ -407,8 +407,8 @@ textarea::placeholder {
     text-align: center;
     font-size: 0.9rem;
     font-weight: 600;
-    color: var(--cib-primary-blue);
-    box-shadow: 0 2px 12px rgba(0, 61, 107, 0.1);
+    color: var(--cib-black);
+    box-shadow: 0 2px 12px rgba(77, 98, 120, 0.1);
     min-width: 120px;
 }
 
@@ -463,15 +463,15 @@ textarea::placeholder {
 .prompt-section h3 {
     margin-bottom: 1rem;
     font-size: 1.4rem;
-    color: var(--cib-primary-blue);
+    color: var(--cib-red);
 }
 
 .prompt-display {
-    background: var(--cib-light-gray);
+    background: var(--cib-gray-7);
     border: 1px solid var(--glass-border);
     border-radius: 8px;
     padding: 1.5rem;
-    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-family: 'Segoe UI', 'Consolas', 'Monaco', 'Courier New', monospace;
     font-size: 0.95rem;
     line-height: 1.6;
     margin-bottom: 1rem;
