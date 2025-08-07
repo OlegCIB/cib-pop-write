@@ -5,14 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="worker-url" content="https://cib-pop-write-text-improver-prod.olegsk.workers.dev">
     <title>CIB PoP write - Text Workflow</title>
+    <link rel="icon" type="image/x-icon" href="https://www.cib.de/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://www.cib.de/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://www.cib.de/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://www.cib.de/apple-touch-icon.png">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
         <header>
-            <img src="cib-pop-logo.svg" alt="CIB POP" class="header-logo">
-            <h1>CIB PoP write - Text Workflow</h1>
-            <p class="header-subtitle">Professionelle Textverarbeitung mit CIB PoP Technologie</p>
+            <h1><a href="https://www.cib.de" target="_blank"><img src="cib-logo.svg" alt="CIB software GmbH" class="header-logo"></a> - <a href="https://www.cib.de/pop/" target="_blank"><img src="cib-pop-logo.svg" alt="CIB POP" class="title-logo"></a> write</h1>
         </header>
         
         <main>
@@ -25,14 +27,9 @@
                 
                 <!-- Pfeil von Oben Links nach Unten Links -->
                 <div class="arrow-container arrow-down-left">
-                    <div class="arrow arrow-vertical">
-                        <div class="arrow-body"></div>
-                        <div class="arrow-head"></div>
-                    </div>
-                    <div class="arrow-label">
-                        <img src="cib-pop-logo.svg" alt="CIB POP" class="logo-small">
-                        <span>Pseudonymisierung</span>
-                    </div>
+                    <button class="arrow-button">
+                        <img src="cib-pop-logo.svg" alt="CIB POP" class="logo-small"> &nbsp; Pseudonymisierung
+                    </button>
                 </div>
                 
                 <!-- Oben Rechts: Final -->
@@ -47,46 +44,17 @@
                     <textarea id="pseudonymized-text" placeholder="Hier erscheint der pseudonymisierte Text..."></textarea>
                 </div>
                 
-                <!-- Pfeil von Unten Links nach Unten Rechts -->
-                <div class="arrow-container arrow-horizontal-right">
-                    <div class="arrow arrow-horizontal">
-                        <div class="arrow-body"></div>
-                        <div class="arrow-head"></div>
-                    </div>
-                    <div class="arrow-label">
-                        <span>Text Verbessern</span>
-                        <small>(ChatGPT)</small>
-                    </div>
-                </div>
-                
                 <!-- Unten Rechts: ChatGPT Verbesserung -->
                 <div class="text-area-container bottom-right">
                     <label for="improved-text">Verbesserter Text (ChatGPT)</label>
                     <textarea id="improved-text" placeholder="Hier erscheint der von ChatGPT verbesserte Text..."></textarea>
                 </div>
                 
-                <!-- Pfeil von Unten Rechts nach Unten Links (Vibe Texting) -->
-                <div class="arrow-container arrow-horizontal-left">
-                    <div class="arrow arrow-horizontal-reverse">
-                        <div class="arrow-body"></div>
-                        <div class="arrow-head"></div>
-                    </div>
-                    <div class="arrow-label">
-                        <span>Vibe Texting</span>
-                        <small>(Nochmalige Verbesserung)</small>
-                    </div>
-                </div>
-                
                 <!-- Pfeil von Unten Rechts nach Oben Rechts (De-Pseudonymisierung) -->
                 <div class="arrow-container arrow-up-right">
-                    <div class="arrow arrow-vertical-up">
-                        <div class="arrow-body"></div>
-                        <div class="arrow-head"></div>
-                    </div>
-                    <div class="arrow-label">
-                        <img src="cib-pop-logo.svg" alt="CIB POP" class="logo-small">
-                        <span>De-Pseudonymisierung</span>
-                    </div>
+                    <button class="arrow-button">
+                        <img src="cib-pop-logo.svg" alt="CIB POP" class="logo-small"> &nbsp; De-Pseudonymisierung
+                    </button>
                 </div>
             </div>
             
