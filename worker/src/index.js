@@ -102,16 +102,20 @@ async function handleHocrEndpoint(request, env) {
     }
 
     // Convert text to HOCR format
-    const hocrContent = convertTextToHocr(text);
+    const initialHocrContent = convertTextToHocr(text);
 
     // Send HOCR to remote server and get entity mappings
-    const entityMappings = await processHocrWithRemoteServer(hocrContent, env);
+    const { entityMappings, hocrContent } = await processHocrWithRemoteServer(initialHocrContent, env);
+
+    // Generate pseudonymized text from the returned HOCR content
+    const pseudonymizedText = hocrContent ? generatePseudonymizedText(hocrContent) : '';
 
     // Return successful response
     return createSuccessResponse({
       success: true,
       originalText: text,
       entityMappings: entityMappings,
+      pseudonymizedText: pseudonymizedText,
       timestamp: new Date().toISOString()
     });
 
@@ -192,6 +196,7 @@ function convertTextToHocr(text) {
 
 /**
  * Send HOCR content to remote server and parse the response
+ * @returns {Object} Object containing entityMappings and hocrContent
  */
 async function processHocrWithRemoteServer(hocrContent, env) {
   // Create form data for the POST request
@@ -223,16 +228,84 @@ async function processHocrWithRemoteServer(hocrContent, env) {
   if (responseData.hocr || responseData.hocrContent) {
     // Parse the returned HOCR content for entities
     const hocrData = responseData.hocr || responseData.hocrContent;
-    return parseHocrContentForEntities(hocrData);
+    const entityMappings = parseHocrContentForEntities(hocrData);
+    return { entityMappings, hocrContent: hocrData };
   }
   
   // If the response is already entity mappings, return as is
   if (responseData.entities || responseData.entityMappings) {
-    return responseData.entities || responseData.entityMappings;
+    const entityMappings = responseData.entities || responseData.entityMappings;
+    return { entityMappings, hocrContent: null };
   }
   
   // If response has a different structure, try to extract meaningful data
-  return responseData;
+  return { entityMappings: responseData, hocrContent: null };
+}
+
+/**
+ * Generate pseudonymized text from HOCR content by replacing words with their entity annotations
+ * while preserving the original text structure (line breaks, paragraphs, etc.)
+ * 
+ * @param {string} hocrContent - The HOCR content from the remote server
+ * @returns {string} Pseudonymized text with entity annotations
+ */
+function generatePseudonymizedText(hocrContent) {
+  // Use cheerio to parse the HOCR content
+  const $ = cheerio.load(hocrContent);
+  
+  // Find all word elements (spans with class ocrx_word)
+  const wordElements = $('.ocrx_word');
+  
+  // Create a map of word positions to their replacements
+  const wordReplacements = new Map();
+  
+  wordElements.each((index, element) => {
+    const $element = $(element);
+    const title = $element.attr('title') || '';
+    const text = $element.text().trim();
+    
+    // Get the full entity name including numbers
+    const fullEntity = extractFullXEntityFromTitle(title);
+    
+    if (fullEntity) {
+      // Replace the word with its entity annotation
+      $element.text(fullEntity);
+    }
+  });
+  
+  // Extract text content while preserving structure
+  let pseudonymizedText = '';
+  
+  // Find all paragraphs
+  $('.ocr_par').each((pIndex, par) => {
+    const $par = $(par);
+    let paragraphText = '';
+    
+    // Find all lines in this paragraph
+    $par.find('.ocr_line').each((lIndex, line) => {
+      const $line = $(line);
+      let lineText = '';
+      
+      // Find all words in this line
+      $line.find('.ocrx_word').each((wIndex, word) => {
+        const $word = $(word);
+        const wordText = $word.text().trim();
+        if (wordText) {
+          lineText += (lineText ? ' ' : '') + wordText;
+        }
+      });
+      
+      if (lineText) {
+        paragraphText += (paragraphText ? '\n' : '') + lineText;
+      }
+    });
+    
+    if (paragraphText) {
+      pseudonymizedText += (pseudonymizedText ? '\n\n' : '') + paragraphText;
+    }
+  });
+  
+  return pseudonymizedText || '';
 }
 
 /**
@@ -297,6 +370,38 @@ function extractXEntityFromTitle(title) {
       const tokens = entityPart.split(/\s+/);
       if (tokens.length > 0) {
         return tokens.length === 1 ? tokens[0] : tokens.slice(0, -1).join(' ');
+      }
+    }
+  }
+  
+  return null;
+}
+
+/**
+ * Extract full x_entity value from the title attribute including the number.
+ * 
+ * Example title: "x_sensibility 1; bbox 414 176 526 200; x_entity first_name 0"
+ * Should return: "first_name_0"
+ * 
+ * @param {string} title - The title attribute string
+ * @returns {string|null} The full entity name with number or null if not found
+ */
+function extractFullXEntityFromTitle(title) {
+  if (!title.includes('x_entity')) {
+    return null;
+  }
+  
+  // Split by semicolon and find the x_entity part
+  const parts = title.split(';');
+  for (const part of parts) {
+    const trimmedPart = part.trim();
+    if (trimmedPart.startsWith('x_entity')) {
+      // Extract the full entity part (everything after 'x_entity')
+      const entityPart = trimmedPart.replace('x_entity', '').trim();
+      // Join all tokens with underscores to create the full entity name
+      const tokens = entityPart.split(/\s+/).filter(token => token.length > 0);
+      if (tokens.length > 0) {
+        return tokens.join('_');
       }
     }
   }
