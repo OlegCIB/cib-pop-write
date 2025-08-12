@@ -59,13 +59,15 @@ async function handleInputChange() {
         try {
             // Call HOCR processing endpoint
             const hocrResult = await processTextWithHocr(text);
-            
+
+            /*
             // Store entity mappings for later use in de-pseudonymization
             storedEntityMappings = hocrResult.entityMappings || {};
             
             // Create pseudonymized text by replacing entities with placeholders
             const pseudonymized = createPseudonymizedText(text, storedEntityMappings);
-            pseudonymizedText.value = pseudonymized;
+            */
+            pseudonymizedText.value = hocrResult.pseudonymizedText || text;
             
         } catch (error) {
             console.error('HOCR processing failed:', error);
