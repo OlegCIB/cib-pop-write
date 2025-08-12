@@ -1,19 +1,30 @@
 {
   "name": "cib-pop-write-worker",
   "version": "1.0.0",
-  "description": "Cloudflare Worker for CIB Pop Write text improvement using ChatGPT",
+  "description": "Cloudflare Worker for CIB Pop Write text improvement using ChatGPT with HOCR parser integration",
   "main": "src/index.js",
+  "type": "module",
   "scripts": {
     "dev": "wrangler dev",
     "deploy": "wrangler deploy",
     "deploy:staging": "wrangler deploy --env staging",
-    "deploy:production": "wrangler deploy --env production"
+    "deploy:production": "wrangler deploy --env production",
+    "hocr:parse": "node parse_hocr_directly.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.12"
   },
   "keywords": [
     "cloudflare-worker",
     "chatgpt",
     "text-improvement",
-    "cib-pop"
+    "cib-pop",
+    "hocr",
+    "ocr",
+    "parser",
+    "entity",
+    "extraction"
   ],
   "author": "CIB Pop Write Team",
   "license": "MIT",
