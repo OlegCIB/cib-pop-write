@@ -9,6 +9,9 @@ const pseudonymizedText = document.getElementById('pseudonymized-text');
 const improvedText = document.getElementById('improved-text');
 const finalText = document.getElementById('final-text');
 
+// Global variable to store entity mappings from HOCR processing
+let storedEntityMappings = {};
+
 // Initialize the application when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
     initializeWorkflow();
@@ -44,14 +47,33 @@ function setupEventListeners() {
 }
 
 /**
- * Handle input text changes (simulate pseudonymization)
+ * Handle input text changes (process text with HOCR backend)
  */
-function handleInputChange() {
+async function handleInputChange() {
     const text = inputText.value.trim();
     if (text && pseudonymizedText) {
-        // Simulate pseudonymization process
-        const pseudonymized = simulatePseudonymization(text);
-        pseudonymizedText.value = pseudonymized;
+        // Show loading state
+        pseudonymizedText.value = 'Pseudonymisierung läuft...';
+        addProcessingAnimation(pseudonymizedText);
+        
+        try {
+            // Call HOCR processing endpoint
+            const hocrResult = await processTextWithHocr(text);
+            
+            // Store entity mappings for later use in de-pseudonymization
+            storedEntityMappings = hocrResult.entityMappings || {};
+            
+            // Create pseudonymized text by replacing entities with placeholders
+            const pseudonymized = createPseudonymizedText(text, storedEntityMappings);
+            pseudonymizedText.value = pseudonymized;
+            
+        } catch (error) {
+            console.error('HOCR processing failed:', error);
+            // Fallback to simulation if API fails
+            const pseudonymized = simulatePseudonymization(text);
+            pseudonymizedText.value = pseudonymized;
+            storedEntityMappings = {}; // Clear stored mappings on fallback
+        }
         
         // Trigger visual feedback
         addProcessingAnimation(pseudonymizedText);
@@ -80,13 +102,13 @@ async function handlePseudonymizedChange() {
 }
 
 /**
- * Handle improved text changes (simulate vibe texting and de-pseudonymization)
+ * Handle improved text changes (restore original entities using stored mappings)
  */
 function handleImprovedChange() {
     const text = improvedText.value.trim();
     if (text && finalText) {
-        // Simulate vibe texting and de-pseudonymization
-        const final = simulateVibeTexting(text);
+        // Use stored entity mappings to restore original values
+        const final = restoreOriginalEntities(text, storedEntityMappings);
         finalText.value = final;
         
         // Trigger visual feedback
@@ -103,6 +125,131 @@ function simulatePseudonymization(text) {
         .replace(/\b[A-Z][a-z]+\s+[A-Z][a-z]+\b/g, '[PERSON]')
         .replace(/\b\d{4,}\b/g, '[NUMMER]')
         .replace(/@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g, '[EMAIL]');
+}
+
+/**
+ * Process text using HOCR via Cloudflare Worker
+ */
+async function processTextWithHocr(text) {
+    const workerUrl = getWorkerUrl();
+    
+    try {
+        const response = await fetch(`${workerUrl}/hocr`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                text: text
+            })
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        
+        if (data.success && data.entityMappings) {
+            return data;
+        } else {
+            throw new Error('Invalid response from HOCR processing service');
+        }
+        
+    } catch (error) {
+        console.error('Error processing text with HOCR:', error);
+        throw error;
+    }
+}
+
+/**
+ * Create pseudonymized text by replacing entities with placeholders
+ */
+function createPseudonymizedText(text, entityMappings) {
+    let pseudonymized = text;
+    
+    // Replace actual entity values with generic placeholders
+    for (const [entityType, entityValue] of Object.entries(entityMappings)) {
+        if (entityValue && entityValue.trim()) {
+            // Create a placeholder based on entity type
+            let placeholder = `[${entityType.toUpperCase()}]`;
+            
+            // Use more specific placeholders for common entity types
+            if (entityType.includes('name')) {
+                placeholder = '[PERSON]';
+            } else if (entityType.includes('number') || entityType.includes('id')) {
+                placeholder = '[NUMMER]';
+            } else if (entityType.includes('email')) {
+                placeholder = '[EMAIL]';
+            } else if (entityType.includes('address')) {
+                placeholder = '[ADRESSE]';
+            } else if (entityType.includes('phone')) {
+                placeholder = '[TELEFON]';
+            }
+            
+            // Replace all occurrences of the entity value with the placeholder
+            const regex = new RegExp(escapeRegExp(entityValue), 'gi');
+            pseudonymized = pseudonymized.replace(regex, placeholder);
+        }
+    }
+    
+    return pseudonymized;
+}
+
+/**
+ * Escape special regex characters in a string
+ */
+function escapeRegExp(string) {
+    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+/**
+ * Restore original entities using stored entity mappings
+ */
+function restoreOriginalEntities(text, entityMappings) {
+    let restored = text;
+    
+    // If no entity mappings available, fall back to simulation
+    if (!entityMappings || Object.keys(entityMappings).length === 0) {
+        return simulateVibeTexting(text);
+    }
+    
+    // Create reverse mapping from placeholders to original values
+    const placeholderMap = {};
+    
+    for (const [entityType, entityValue] of Object.entries(entityMappings)) {
+        if (entityValue && entityValue.trim()) {
+            // Determine placeholder based on entity type
+            let placeholder = `[${entityType.toUpperCase()}]`;
+            
+            // Use more specific placeholders for common entity types
+            if (entityType.includes('name')) {
+                placeholder = '[PERSON]';
+            } else if (entityType.includes('number') || entityType.includes('id')) {
+                placeholder = '[NUMMER]';
+            } else if (entityType.includes('email')) {
+                placeholder = '[EMAIL]';
+            } else if (entityType.includes('address')) {
+                placeholder = '[ADRESSE]';
+            } else if (entityType.includes('phone')) {
+                placeholder = '[TELEFON]';
+            }
+            
+            placeholderMap[placeholder] = entityValue;
+        }
+    }
+    
+    // Replace placeholders with original values
+    for (const [placeholder, originalValue] of Object.entries(placeholderMap)) {
+        const regex = new RegExp(escapeRegExp(placeholder), 'gi');
+        restored = restored.replace(regex, originalValue);
+    }
+    
+    // Clean up any ChatGPT improvement annotations
+    restored = restored.replace(/\[ChatGPT Verbesserung:[^\]]+\]/g, '');
+    
+    return restored;
 }
 
 /**
@@ -234,6 +381,9 @@ function getWorkerUrl() {
 // Export functions for potential use in other scripts
 window.CIBPopWrite = {
     simulatePseudonymization,
+    processTextWithHocr,
+    createPseudonymizedText,
+    restoreOriginalEntities,
     improveTextWithChatGPT,
     simulateTextImprovement,
     simulateVibeTexting,
