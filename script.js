@@ -32,17 +32,17 @@ function initializeWorkflow() {
 function setupEventListeners() {
     // Input text changes trigger pseudonymization simulation
     if (inputText) {
-        inputText.addEventListener('input', debounce(handleInputChange, 500));
+        inputText.addEventListener('change', debounce(handleInputChange, 500));
     }
     
     // Pseudonymized text changes trigger improvement simulation
     if (pseudonymizedText) {
-        pseudonymizedText.addEventListener('input', debounce(handlePseudonymizedChange, 500));
+        pseudonymizedText.addEventListener('change', debounce(handlePseudonymizedChange, 500));
     }
     
     // Improved text changes trigger vibe texting simulation
     if (improvedText) {
-        improvedText.addEventListener('input', debounce(handleImprovedChange, 500));
+        improvedText.addEventListener('change', debounce(handleImprovedChange, 500));
     }
 }
 
