@@ -77,7 +77,7 @@ async function handleImproveEndpoint(request, env) {
 }
 
 // Run main function if this file is executed directly
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (typeof process !== 'undefined' && import.meta.url === `file://${process.argv[1]}`) {
   main().catch(console.error);
 }
 
