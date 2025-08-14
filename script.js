@@ -184,7 +184,7 @@ function restoreOriginalEntities(text, entityMappings) {
     let restored = text;
         
     for (const [key, value] of Object.entries(entityMappings)) {
-        restored = restored.replace(new RegExp(value, 'g'), key);
+        restored = restored.replace(new RegExp(value, 'gi'), key);
     }
 
     /*    
