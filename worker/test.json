@@ -1,0 +1,207 @@
+{
+  "layout": {
+    "root": {
+      "id": "image_0",
+      "type": "image",
+      "attributes": {
+        "title": null,
+        "ocr-capabilities": ""
+      },
+      "children": [
+        {
+          "id": "page_0",
+          "type": "page",
+          "attributes": {
+            "x_useddeskewangle": "-0.5625"
+          },
+          "children": [
+            {
+              "id": "line_0",
+              "type": "line",
+              "attributes": {},
+              "children": [
+                {
+                  "id": "word_0",
+                  "type": "word",
+                  "attributes": {
+                    "x_entity_alternatives": "['company_name', 'last_name', 'city', 'first_name']"
+                  },
+                  "children": [],
+                  "text": "Meine",
+                  "left": 100,
+                  "top": 100,
+                  "width": 50,
+                  "height": 50
+                },
+                {
+                  "id": "word_1",
+                  "type": "word",
+                  "attributes": {
+                    "x_entity_alternatives": "['last_name', 'city', 'company_name', 'first_name']"
+                  },
+                  "children": [],
+                  "text": "Name",
+                  "left": 160,
+                  "top": 100,
+                  "width": 40,
+                  "height": 50
+                },
+                {
+                  "id": "word_2",
+                  "type": "word",
+                  "attributes": {
+                    "x_entity_alternatives": "['last_name', 'company_name', 'first_name', 'city']"
+                  },
+                  "children": [],
+                  "text": "ist",
+                  "left": 210,
+                  "top": 100,
+                  "width": 30,
+                  "height": 50
+                },
+                {
+                  "id": "word_3",
+                  "type": "word",
+                  "attributes": {
+                    "x_entity": "first_name 0",
+                    "x_sensibility": "1",
+                    "x_entity_confidence": 1,
+                    "x_entity_alternatives": "['last_name', 'company_name', 'city', 'street_name']"
+                  },
+                  "children": [],
+                  "text": "Korben",
+                  "left": 250,
+                  "top": 100,
+                  "width": 60,
+                  "height": 50
+                },
+                {
+                  "id": "word_4",
+                  "type": "word",
+                  "attributes": {
+                    "x_entity": "last_name 1",
+                    "x_sensibility": "1",
+                    "x_entity_confidence": 1,
+                    "x_entity_alternatives": "['company_name', 'city', 'postcode', 'numeric_id']"
+                  },
+                  "children": [],
+                  "text": "Dallas",
+                  "left": 320,
+                  "top": 100,
+                  "width": 60,
+                  "height": 50
+                },
+                {
+                  "id": "word_5",
+                  "type": "word",
+                  "attributes": {
+                    "x_entity_alternatives": "['company_name', 'last_name', 'city', 'street_name']"
+                  },
+                  "children": [],
+                  "text": "Ich",
+                  "left": 390,
+                  "top": 100,
+                  "width": 30,
+                  "height": 50
+                },
+                {
+                  "id": "word_6",
+                  "type": "word",
+                  "attributes": {
+                    "x_entity_alternatives": "['company_name', 'city', 'last_name', 'street_name']"
+                  },
+                  "children": [],
+                  "text": "arbeite",
+                  "left": 430,
+                  "top": 100,
+                  "width": 70,
+                  "height": 50
+                },
+                {
+                  "id": "word_7",
+                  "type": "word",
+                  "attributes": {
+                    "x_entity_alternatives": "['company_name', 'city', 'last_name', 'street_name']"
+                  },
+                  "children": [],
+                  "text": "bei",
+                  "left": 510,
+                  "top": 100,
+                  "width": 30,
+                  "height": 50
+                },
+                {
+                  "id": "word_8",
+                  "type": "word",
+                  "attributes": {
+                    "x_entity": "company_name 0",
+                    "x_sensibility": "1",
+                    "x_entity_confidence": 1,
+                    "x_entity_alternatives": "['company_name', 'city', 'last_name', 'first_name']"
+                  },
+                  "children": [],
+                  "text": "Microsoft",
+                  "left": 550,
+                  "top": 100,
+                  "width": 90,
+                  "height": 50
+                },
+                {
+                  "id": "word_9",
+                  "type": "word",
+                  "attributes": {
+                    "x_entity_alternatives": "['company_name', 'city', 'last_name', 'street_name']"
+                  },
+                  "children": [],
+                  "text": "als",
+                  "left": 650,
+                  "top": 100,
+                  "width": 30,
+                  "height": 50
+                },
+                {
+                  "id": "word_10",
+                  "type": "word",
+                  "attributes": {
+                    "x_entity_alternatives": "['company_name', 'city', 'last_name', 'street_name']"
+                  },
+                  "children": [],
+                  "text": "Softwareentwickler",
+                  "left": 690,
+                  "top": 100,
+                  "width": 180,
+                  "height": 50
+                }
+              ],
+              "text": null,
+              "left": 0,
+              "top": 100,
+              "width": 1000,
+              "height": 50
+            }
+          ],
+          "width": 2456,
+          "height": 3516,
+          "index_in_layout": 0,
+          "language": null
+        }
+      ],
+      "image": "input.png",
+      "angle": 0,
+      "versions": [
+        [
+          "CIB ocr",
+          "3.1.1.0"
+        ],
+        [
+          "CIB deepER",
+          "2.8.0"
+        ],
+        [
+          "CIB sherlock",
+          "2.7.6"
+        ]
+      ]
+    }
+  }
+}
