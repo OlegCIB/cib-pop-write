@@ -30,19 +30,22 @@ function initializeWorkflow() {
  * Setup event listeners for text areas
  */
 function setupEventListeners() {
+
+    const debounceInterval = 2000; // Debounce interval for input changes
+
     // Input text changes trigger pseudonymization simulation
     if (inputText) {
-        inputText.addEventListener('input', debounce(handleInputChange, 500));
+        inputText.addEventListener('input', debounce(handleInputChange, debounceInterval));
     }
     
     // Pseudonymized text changes trigger improvement simulation
     if (pseudonymizedText) {
-        pseudonymizedText.addEventListener('input', debounce(handlePseudonymizedChange, 500));
+        pseudonymizedText.addEventListener('input', debounce(handlePseudonymizedChange, debounceInterval));
     }
     
     // Improved text changes trigger vibe texting simulation
     if (improvedText) {
-        improvedText.addEventListener('input', debounce(handleImprovedChange, 500));
+        improvedText.addEventListener('input', debounce(handleImprovedChange, debounceInterval));
     }
 }
 
@@ -60,13 +63,9 @@ async function handleInputChange() {
             // Call HOCR processing endpoint
             const hocrResult = await processTextWithHocr(text);
 
-            /*
             // Store entity mappings for later use in de-pseudonymization
             storedEntityMappings = hocrResult.entityMappings || {};
-            
-            // Create pseudonymized text by replacing entities with placeholders
-            const pseudonymized = createPseudonymizedText(text, storedEntityMappings);
-            */
+
             pseudonymizedText.value = hocrResult.pseudonymizedText || text;
             
         } catch (error) {
@@ -172,40 +171,6 @@ async function processTextWithHocr(text) {
 }
 
 /**
- * Create pseudonymized text by replacing entities with placeholders
- */
-function createPseudonymizedText(text, entityMappings) {
-    let pseudonymized = text;
-    
-    // Replace actual entity values with generic placeholders
-    for (const [entityType, entityValue] of Object.entries(entityMappings)) {
-        if (entityValue && entityValue.trim()) {
-            // Create a placeholder based on entity type
-            let placeholder = `[${entityType.toUpperCase()}]`;
-            
-            // Use more specific placeholders for common entity types
-            if (entityType.includes('name')) {
-                placeholder = '[PERSON]';
-            } else if (entityType.includes('number') || entityType.includes('id')) {
-                placeholder = '[NUMMER]';
-            } else if (entityType.includes('email')) {
-                placeholder = '[EMAIL]';
-            } else if (entityType.includes('address')) {
-                placeholder = '[ADRESSE]';
-            } else if (entityType.includes('phone')) {
-                placeholder = '[TELEFON]';
-            }
-            
-            // Replace all occurrences of the entity value with the placeholder
-            const regex = new RegExp(escapeRegExp(entityValue), 'gi');
-            pseudonymized = pseudonymized.replace(regex, placeholder);
-        }
-    }
-    
-    return pseudonymized;
-}
-
-/**
  * Escape special regex characters in a string
  */
 function escapeRegExp(string) {
@@ -217,42 +182,18 @@ function escapeRegExp(string) {
  */
 function restoreOriginalEntities(text, entityMappings) {
     let restored = text;
-    
-    // If no entity mappings available, fall back to simulation
-    if (!entityMappings || Object.keys(entityMappings).length === 0) {
-        return simulateVibeTexting(text);
+        
+    for (const [key, value] of Object.entries(entityMappings)) {
+        restored = restored.replace(new RegExp(value, 'g'), key);
     }
-    
-    // Create reverse mapping from placeholders to original values
-    const placeholderMap = {};
-    
-    for (const [entityType, entityValue] of Object.entries(entityMappings)) {
-        if (entityValue && entityValue.trim()) {
-            // Determine placeholder based on entity type
-            let placeholder = `[${entityType.toUpperCase()}]`;
-            
-            // Use more specific placeholders for common entity types
-            if (entityType.includes('name')) {
-                placeholder = '[PERSON]';
-            } else if (entityType.includes('number') || entityType.includes('id')) {
-                placeholder = '[NUMMER]';
-            } else if (entityType.includes('email')) {
-                placeholder = '[EMAIL]';
-            } else if (entityType.includes('address')) {
-                placeholder = '[ADRESSE]';
-            } else if (entityType.includes('phone')) {
-                placeholder = '[TELEFON]';
-            }
-            
-            placeholderMap[placeholder] = entityValue;
-        }
-    }
-    
+
+    /*    
     // Replace placeholders with original values
     for (const [placeholder, originalValue] of Object.entries(placeholderMap)) {
         const regex = new RegExp(escapeRegExp(placeholder), 'gi');
         restored = restored.replace(regex, originalValue);
     }
+        */
     
     // Clean up any ChatGPT improvement annotations
     restored = restored.replace(/\[ChatGPT Verbesserung:[^\]]+\]/g, '');
